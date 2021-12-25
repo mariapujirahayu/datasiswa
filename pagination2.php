@@ -1,191 +1,104 @@
+<?php include 'koneksi.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <title>Maribelajarcoding.com - Pagination dengan PHP dan Mysql</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- css bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<title>Tutorial Pagination -  Malasngoding.com</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	<div class="container">
+		<center>
+			<h2>Membuat Pagination PHP, MySQLI dan Boostrap 4</h2>
+		</center>
+		<br>
+		<br>
+		<form class="row g-3" action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
+			<div class="col-auto">
+				<?php
+					$kata_kunci="";
+					if (isset($_POST['kata_kunci'])) {
+						$kata_kunci=$_POST['kata_kunci'];
+					}
+				?>
+				<input type="text" name="kata_kunci" value="<?php echo $kata_kunci;?>" class="form-control" id="inputPassword2" placeholder="Search...">
+			</div>
+			<div class="button">
+				<button type="submit" class="btn btn-primary mb-3">Search</button>
+				<span>
+					<button class="btn btn-primary" type="button">Button</button>
+					<button class="btn btn-primary" type="button">Button</button>
+				</span>
+			</div>
+		</form>
+		<table class="table table-striped table-hover">
+			<thead class="table-primary">
+				<tr>
+					<th>Nomor</th>
+					<th>Nama</th>
+					<th>Tanggal Lahir</th>
+					<th>Gender</th>
+					<th>Kelas</th>
+				</tr>
+			</thead>
+			<tbody>
+        <?php 
+        $batas = 5;
+				$halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+				$halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;	
+ 
+				$previous = $halaman - 1;
+				$next = $halaman + 1;
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">maribelajarcoding.com</a>
-    </div>
-  </div>
-</nav>
-  
-<div class="container">
-  <div align="center">
-    <h3><b>Pencarian dan Pagination PHP</b></h3>
-    <h4><b>maribelajarcoding.com</b></h4>
-  </div>
-  <!--Panel Form pencarian -->
-  <div class="row">
-    <div class="col-md-5">
-      <div class="panel panel-default">
-        <div class="panel-heading"><b>Pencarian</b></div>
-        <div class="panel-body">
-          <form class="form-inline" >
-            <div class="form-group">
-              <select class="form-control" id="Kolom" name="Kolom" required="">
-                <?php
-                  $kolom=(isset($_GET['Kolom']))? $_GET['Kolom'] : "";
-                ?>
-                <option value="Nama" <?php if ($kolom=="Nama") echo "selected"; ?>>Nama</option>
-                <option value="Alamat" <?php if ($kolom=="Alamat") echo "selected";?>>Alamat</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" id="KataKunci" name="KataKunci" placeholder="Kata kunci.." required="" value="<?php if (isset($_GET['KataKunci']))  echo $_GET['KataKunci']; ?>">
-            </div>
-            <button type="submit" class="btn btn-primary">Cari</button>
-            <a href="index.php" class="btn btn-danger">Reset</a>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Tabel data Siswa -->
-  <table class="table table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>Nama</th>
-        <th>Alamat</th>
-        <th>Jenis Kelamin</th>
-      </tr>
-    </thead>  
-    <tbody>
-      <?php
-      include "koneksi.php";
-     
-      $page = (isset($_GET['page']))? (int) $_GET['page'] : 1;
-      
-      $kolomCari=(isset($_GET['Kolom']))? $_GET['Kolom'] : "";
-     
-      $kolomKataKunci=(isset($_GET['KataKunci']))? $_GET['KataKunci'] : "";
+        $ambil = $koneksi->query("SELECT * FROM siswa");
+				// if (isset($_POST['kata_kunci'])) {
+				// 	$kata_kunci=trim($_POST['kata_kunci']);
+				// 	$ambil = $koneksi->query("SELECT * FROM siswa WHERE nama LIKE '%".$kata_kunci."%' OR tgl_lahir LIKE '%".$kata_kunci."%' OR gender LIKE '%".$kata_kunci."%' OR kelas LIKE '%".$kata_kunci."%' ORDER BY id_siswa ASC"); 
+				// }else {
+				// 	$ambil = $koneksi->query("SELECT * FROM siswa ORDER BY id_siswa ASC"); 
+				// } 
+				
+        $jumlah_data = mysqli_num_rows($ambil);
+				$total_halaman = ceil($jumlah_data / $batas);
 
-      // Jumlah data per halaman
-      $limit = 5;
+        // $data_pegawai = $koneksi->query("select * from siswa limit $halaman_awal, $batas");
+        if (isset($_POST['kata_kunci'])) {
+					$kata_kunci=trim($_POST['kata_kunci']);
+					$data_pegawai = $koneksi->query("SELECT * FROM siswa WHERE nama LIKE '%".$kata_kunci."%' OR tgl_lahir LIKE '%".$kata_kunci."%' OR gender LIKE '%".$kata_kunci."%' OR kelas LIKE '%".$kata_kunci."%' ORDER BY id_siswa ASC LIMIT $halaman_awal, $batas"); 
+				}else {
+					$data_pegawai = $koneksi->query("SELECT * FROM siswa ORDER BY id_siswa ASC LIMIT $halaman_awal, $batas"); 
+				} 
+				$nomor = $halaman_awal+1;
 
-      $limitStart = ($page - 1) * $limit;
-      
-      //kondisi jika parameter pencarian kosong
-      if($kolomCari=="" && $kolomKataKunci==""){
-        $SqlQuery = mysqli_query($con, "SELECT * FROM tutorial LIMIT ".$limitStart.",".$limit);
-      }else{
-        //kondisi jika parameter kolom pencarian diisi
-        $SqlQuery = mysqli_query($con, "SELECT * FROM tutorial WHERE $kolomCari LIKE '%$kolomKataKunci%' LIMIT ".$limitStart.",".$limit);
-      }
-      
-      $no = $limitStart + 1;
-      
-      while($row = mysqli_fetch_array($SqlQuery)){ 
-      ?>
+        ?>
+        <?php while ($pecah = $data_pegawai->fetch_assoc()) {  ?>
         <tr>
-          <td><?php echo $no++; ?></td>
-          <td><?php echo $row['pegawai_umur']; ?></td>
-          <td><?php echo $row['pegawai_umur']; ?></td>
-          <td><?php echo $row['pegawai_alamat']; ?></td>
+            <td><?php echo $nomor++; ?></td>
+            <td><?php echo $pecah['nama']; ?></td>
+            <td><?php echo $pecah['tgl_lahir']; ?></td>
+            <td><?php echo $pecah['gender']; ?></td>
+            <td><?php echo $pecah['kelas']; ?></td>
         </tr>
-      <?php           
-      }
-      ?>
-    </tbody>      
-  </table>
-  <div align="right">
-    <ul class="pagination">
-      <?php
-        // Jika page = 1, maka LinkPrev disable
-        if($page == 1){ 
-      ?>        
-        <!-- link Previous Page disable --> 
-        <li class="disabled"><a href="#">Previous</a></li>
-      <?php
-        }
-        else{ 
-          $LinkPrev = ($page > 1)? $page - 1 : 1;  
-
-          if($kolomCari=="" && $kolomKataKunci==""){
-          ?>
-            <li><a href="index.php?page=<?php echo $LinkPrev; ?>">Previous</a></li>
-       <?php     
-          }else{
-        ?> 
-          <li><a href="index.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $LinkPrev;?>">Previous</a></li>
-         <?php
-           } 
-        }
-      ?>
-
-      <?php
-        //kondisi jika parameter pencarian kosong
-        if($kolomCari=="" && $kolomKataKunci==""){
-          $SqlQuery = mysqli_query($con, "SELECT * FROM tutorial");
-        }else{
-          //kondisi jika parameter kolom pencarian diisi
-          $SqlQuery = mysqli_query($con, "SELECT * FROM tutorial WHERE $kolomCari LIKE '%$kolomKataKunci%'");
-        }     
-      
-        //Hitung semua jumlah data yang berada pada tabel Sisawa
-        $JumlahData = mysqli_num_rows($SqlQuery);
-        
-        // Hitung jumlah halaman yang tersedia
-        $jumlahPage = ceil($JumlahData / $limit); 
-        
-        // Jumlah link number 
-        $jumlahNumber = 1; 
-
-        // Untuk awal link number
-        $startNumber = ($page > $jumlahNumber)? $page - $jumlahNumber : 1; 
-        
-        // Untuk akhir link number
-        $endNumber = ($page < ($jumlahPage - $jumlahNumber))? $page + $jumlahNumber : $jumlahPage; 
-        
-        for($i = $startNumber; $i <= $endNumber; $i++){
-          $linkActive = ($page == $i)? ' class="active"' : '';
-
-          if($kolomCari=="" && $kolomKataKunci==""){
-      ?>
-          <li<?php echo $linkActive; ?>><a href="index.php?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-
-      <?php
-        }else{
-          ?>
-          <li<?php echo $linkActive; ?>><a href="index.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-          <?php
-        }
-      }
-      ?>
-      
-      <!-- link Next Page -->
-      <?php       
-       if($page == $jumlahPage){ 
-      ?>
-        <li class="disabled"><a href="#">Next</a></li>
-      <?php
-      }
-      else{
-        $linkNext = ($page < $jumlahPage)? $page + 1 : $jumlahPage;
-       if($kolomCari=="" && $kolomKataKunci==""){
-          ?>
-            <li><a href="index.php?page=<?php echo $linkNext; ?>">Next</a></li>
-       <?php     
-          }else{
-        ?> 
-           <li><a href="index.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $linkNext; ?>">Next</a></li>
-      <?php
-        }
-      }
-      ?>
-    </ul>
-  </div>
-</div>
-
+        <?php } ?>
+			</tbody>
+		</table>
+        <nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item">
+					<a class="page-link" <?php if($halaman > 1){ echo "href='?halaman=$previous'"; } ?>>Previous</a>
+				</li>
+				<?php 
+				for($x=1;$x<=$total_halaman;$x++){
+					?> 
+					<li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+					<?php
+				}
+				?>				
+				<li class="page-item">
+					<a  class="page-link" <?php if($halaman < $total_halaman) { echo "href='?halaman=$next'"; } ?>>Next</a>
+				</li>
+			</ul>
+		</nav>	
+	</div>
 </body>
 </html>

@@ -1,0 +1,17 @@
+form {
+    position: relative;
+}
+
+.button span{
+    /* display: block;
+    float: right; */
+    /* margin-left: 643px; */
+    /* position: absolute; */
+    position: absolute;
+    right: 0;
+    /* margin-right: 0; */
+    /* display:flex; justify-content:flex-end; width:100%; padding:0; */
+}
+.table-primary th{
+    text-align: center;
+}
