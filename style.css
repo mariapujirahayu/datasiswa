@@ -1,5 +1,55 @@
+/*---------- 
+fonts
+----------*/
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
+
+body{
+    font-size: 16px;
+    background-color: #eff0f4;
+    font-family: 'Raleway', sans-serif;
+}
+
+.navbar-brand{
+    width: 100px;
+    height: 50px;
+    position: relative;
+    animation-name: mymove;
+    animation-duration: 5s;
+    animation-iteration-count: 2;
+    color: black;
+}
+@keyframes mymove {
+    from {left: 0px;}
+    to {left: 1300px;}
+}
+
+.container{
+    margin-top: 100px;
+    display: block;
+    animation: fadeInTop 0.5s ease;
+}
+
+.row h2{
+    font-size: 40px;
+    font-weight: 600;
+    padding: 0 15px;
+    margin-top: 180px;
+
+}
+.row a{
+    margin-left: 15px;
+}
+.row img{
+    width: 550px;
+    height: 500px;
+}
+center{
+    margin-top: 100px;
+}
 form {
     position: relative;
+    display: block;
+    animation: fadeInTop 0.5s ease;
 }
 
 .button span{
@@ -14,4 +64,110 @@ form {
 }
 .table-primary th{
     text-align: center;
+}
+
+
+/* ----------
+Efek Animasi 
+-------------*/
+.effect-wrap .effect{
+    position: fixed;
+    z-index: -1;
+}
+.effect-1{
+    width: 30px;
+    height: 30px;
+    border: 4px solid #8a49ff;
+    right: 10%;
+    bottom: 10%;
+    animation: spin 10s linear infinite;
+}
+.effect-2{
+    left: 3%;
+    bottom: 20%;
+    width: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    animation: topBounce 3s ease-in-out infinite;
+}
+.effect-2 div{
+    height: 3px;
+    width: 3px;
+    background-color: #ff9c07;
+    margin: 0 3px 8px;
+}
+.effect-3{
+    height: 180px;
+    width: 180px;
+    border: 25px solid var(--skin-color);
+    border-radius: 50%;
+    left: 50%;
+    top: -120px;
+    animation: leftBounce 3s ease-in-out infinite;
+}
+.effect-4{
+    border-top: 30px solid transparent;
+    border-left: 30px solid #06d79c;
+    left: 30%;
+    top: 20%;
+    animation: spin 15s linear infinite;
+}
+.effect-4:before{
+    content: '';
+    border-top: 30px solid transparent;
+    border-left: 30px solid #06d79c;
+    position: absolute;
+    opacity: 0.5;
+    left: -35px;
+    top: -25px;
+}
+.effect-5{
+    height: 50px;
+    width: 50px;
+    right: 10%;
+    top: 30%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 50%;
+    overflow: hidden;
+    animation: spin 10s linear infinite;
+}
+.effect-5 div{
+    width: 1px;
+    background-color: #4dd0e1;
+}
+@keyframes spin {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes topBounce {
+    0%,100%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(25px);
+    }
+}
+@keyframes leftBounce {
+    0%,100%{
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(25px);
+    }
+}
+@keyframes fadeInTop {
+    0%{
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
 }
