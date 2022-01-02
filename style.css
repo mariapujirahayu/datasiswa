@@ -43,6 +43,25 @@ body{
     width: 550px;
     height: 500px;
 }
+/* --- hover image --- */
+.gambar img {
+    padding: 0px 5px 0px 5px;
+    overflow: hidden;
+}
+.rounded {
+    height: 375px;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.rounded:hover {
+    cursor: pointer;
+    height:550px;
+    width: 600px;
+}
+
 center{
     margin-top: 100px;
 }

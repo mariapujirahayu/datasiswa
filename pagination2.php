@@ -181,6 +181,9 @@
 			?>
 		</div>
 		<!-- Modal Tambah Data End -->
+		<div class="col-lg-12">
+			<?php include 'pagination.php' ?>
+		</div>
 	</div>
 </body>
 </html>

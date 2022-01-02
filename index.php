@@ -21,12 +21,16 @@
 		<?php include 'efek.php'; ?>
 		<div class="row">
 			<div class="col-sm-6">
-				<h2>Data Siswa</h2>
-				<a class="btn btn-info" href="#datasiswa">Lihat Data Siswa</a> 
-				<!-- <a class="btn btn-info" href="#">Hapus</a>  -->
+				<div class="btnadd">
+					<h2>Data Siswa</h2>
+					<a class="btn btn-info" href="#datasiswa">Lihat Data Siswa</a> 
+					<!-- <a class="btn btn-info" href="#">Hapus</a>  -->
+				</div>
 			</div>
 			<div class="col-sm-6">
-				<img src="img/1.png" class="rounded" alt="Cinque Terre"> 
+				<div class="gambar">
+					<img src="img/1.png" class="rounded" alt="Cinque Terre"> 
+				</div>
 			</div>
 		</div>
 		<center id="datasiswa">

@@ -28,7 +28,7 @@
 		</center>
         <div class="card-body">
             <div class="penjelasan" style="margin-top:20px; margin-bottom:30px;">
-                <h6>Data alternatif sebelum diubah</h6>
+                <h6>Data siswa sebelum diubah</h6>
                 <form>
                     <div class="row">
                     <div class="col-md-3 pr-1">
